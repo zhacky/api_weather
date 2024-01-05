@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<div class="hero">
+    <div class="container forecast-area">
+        <section>
+            <div class="container my-6">
+                <form method="post" class="is-flex is-flex-direction-row is-justify-content-space-between p-6">
+                    {% csrf_token %}
+                    <input class="input mx-2" type="text" name="city" placeholder="Enter City Name..."/>
+                    <button class="button is-primary mx-2" type="submit">Display Weather</button>
+                </form>
+            </div>
+        </section>
+        {% if weather_data %}
+        <div class="summary p-2">
+            <h1 class="title has-text-primary">{{weather_data.city}}</h1>
+            <h2 class="subtitle has-text-info">{{weather_data.temperature}}</h2>
+            <p class="content has-text-dark is-size-4 is-capitalized">{{weather_data.description}}</p>
+            <div class="image is-128x128">
+                <img src="http://openweathermap.org/img/wn/{{weather_data.icon}}@2x.png"
+                     alt="{{weather_data.description}}"/>
+            </div>
+        </div>
+        {% endif %}
+        {% if daily_forecast %}
+        <div class="forecast is-flex is-flex-direction-row is-justify-content-between p-2 is-flex-wrap-wrap">
+            {% for forecast in daily_forecast %}
+
+            <div class="card m-2">
+                <h1>{{forecast.test}}</h1>
+                <div class="card-content">
+                    <h1 style="font-size:50px;">{{forecast.outfit}}</h1>
+                    <div class="media">
+                        <figure class="image is-96x96">
+                            <img src="http://openweathermap.org/img/wn/{{forecast.icon}}@4x.png"
+                                 alt="{{forecast.description}}"/>
+                        </figure>
+                    </div>
+                    <h3 class="card-title is-4">{{forecast.day}}</h3>
+                    <p class="card-subtitle is-6">{{forecast.min_temp}}°C - {{forecast.max_temp}}°C</p>
+                    <p class="content">{{forecast.description}}</p>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
