@@ -6,7 +6,7 @@ import requests
 from django.shortcuts import render
 
 
-def index(request):
+def weather_index(request):
     API_KEY = os.environ.get('WEATHER_API_KEY')
     # source: https://openweathermap.org/current#builtin
     # https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
@@ -26,9 +26,9 @@ def index(request):
             'weather_data': weather_data,
             'daily_forecast': daily_forecast
         }
-        return render(request, 'index.html', context)
+        return render(request, 'weather.html', context)
     else:
-        return render(request, 'index.html')
+        return render(request, 'weather.html')
 
 
 def fetch_weather(*, api_key, current_weather_api, city):
@@ -58,6 +58,7 @@ def fetch_weather_and_forecast(*, api_key, current_weather_api, forecast_weather
             daily_forecast.append({
                 'outfit': get_recommendation(int(daily['weather'][0]['id']), outfits=recommendations),
                 'day': datetime.datetime.fromtimestamp(daily['dt']).strftime(format='%A'),
+                'full_dt': daily['dt_txt'],
                 'min_temp': round(daily['main']['temp_min'], 2),
                 'max_temp': round(daily['main']['temp_max'], 2),
                 'description': daily['weather'][0]['description'],
