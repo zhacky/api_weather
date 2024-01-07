@@ -10,22 +10,23 @@
     <div class="container my-6">
         <form method="POST">
             {% csrf_token %}
-            <button class="button is-primary" name="db_src">Load From Database</button>
+            <input type="number" name="page" class="number" placeholder="Page no." required/>
+            <button type="submit" class="button is-primary" name="db_src">Load From Database</button>
             <button type="submit" class="button is-info" name="url_src">Load From URL</button>
-            <button class="button" name="db_save">Save To Database</button>
+            <button type="submit" class="button" name="db_save">Save To Database</button>
         </form>
     </div>
     <section class="display">
         {% if mars_data %}
-        <ul>
+        <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-between">
             {% for data in mars_data %}
-            <li>
-                <card>
-                    <image src="{{data.image}}" class="card-image"></image>
-                </card>
-            </li>
+
+            <image src="{{data.image}}" class="image is-128x128 m-2"></image>
+
             {% endfor %}
-        </ul>
+        </div>
+        {% elif count %}
+        <p>{{count}} images have been saved successfully.</p>
         {% endif %}
     </section>
 </div>
